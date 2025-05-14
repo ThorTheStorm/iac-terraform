@@ -1,4 +1,4 @@
-
+### General Variables ###
 variable "location" {
   type        = string
   description = "Deployment location"
@@ -27,7 +27,7 @@ variable "environment" {
 
 variable "rgname" {
   type        = string
-  description = "Resource Groupe Name"
+  description = "Resource Group Name"
   default     = "rg-torb-terraform"
 }
 
@@ -51,12 +51,12 @@ variable "billing_code" {
   description = "Billing code"
 }
 
-variable "az_regions" {
-  type        = list(string)
-  description = "Azure regions for resources"
-  default     = ["norwayeast", "westeurope"]
+variable "sub_id" {
+  type        = string
+  description = "Azure Subscription ID"
 }
 
+### Storage Account Variables ###
 variable "storage_account_instance_count" {
   type        = number
   description = "Number of storage accounts to create"
@@ -75,9 +75,9 @@ variable "storage_account_tier" {
   default     = "Standard"
 }
 
-variable "sub_id" {
+variable "storage_account_admin" {
   type        = string
-  description = "Azure Subscription ID"
+  description = "Principal ID for the user to get administrative rights on the storage account"
 }
 
 variable "storage_container_instance_count" {
@@ -92,6 +92,7 @@ variable "storage_container_access_type" {
   default     = "private"
 }
 
+### Key Vault Variables ###
 variable "key_vault_instance_count" {
   type        = number
   description = "Number of key vaults to create"
@@ -109,6 +110,10 @@ variable "key_vault_key_permissions" {
     condition     = alltrue([for perm in var.key_vault_key_permissions : substr(perm, 0, 1) == upper(substr(perm, 0, 1))])
     error_message = "All key permissions must start with an uppercase letter."
   }
+  validation {
+    condition     = contains(["Backup", "Create", "Decrypt", "Delete", "Encrypt", "Get", "Import", "List", "Purge", "Recover", "Restore", "Sign", "UnwrapKey", "Update", "Verify", "WrapKey", "Release", "Rotate", "GetRotationPolicy", "SetRotationPolicy"], var.key_vault_key_permissions)
+    error_message = "Invalid vault key permissions for the environment."
+  }
 }
 
 variable "key_vault_secret_permissions" {
@@ -121,6 +126,10 @@ variable "key_vault_secret_permissions" {
   validation {
     condition     = alltrue([for perm in var.key_vault_secret_permissions : substr(perm, 0, 1) == upper(substr(perm, 0, 1))])
     error_message = "All secret permissions must start with an uppercase letter."
+  }
+  validation {
+    condition     = contains(["Backup", "Delete", "Get", "List", "Purge", "Recover", "Restore", "Set"], var.key_vault_key_permissions)
+    error_message = "Invalid vault secret permissions for the environment."
   }
 }
 
@@ -135,9 +144,52 @@ variable "key_vault_storage_permissions" {
     condition     = alltrue([for perm in var.key_vault_storage_permissions : substr(perm, 0, 1) == upper(substr(perm, 0, 1))])
     error_message = "All storage permissions must start with an uppercase letter."
   }
+  validation {
+    condition     = contains(["Backup", "Delete", "DeleteSAS", "Get", "GetSAS", "List", "ListSAS", "Purge", "Recover", "RegenerateKey", "Restore", "Set", "SetSAS", "Update"], var.key_vault_key_permissions)
+    error_message = "Invalid vault storage permissions for the environment."
+  }
 }
 
-variable "storage_account_admin" {
+### Networking Variables ###
+variable "network_address_space" {
   type        = string
-  description = "Principal ID for the user to get administrative rights on the storage account"
+  description = "Network Address Space"
+  default     = "10.0.0.0"
+}
+
+variable "vnet_mask" {
+  type        = number
+  description = "Virtual Network Mask"
+  default     = 16
+}
+
+variable "vnet_instance_count" {
+  type        = number
+  description = "Number of virtual networks to create"
+  default     = 1
+}
+
+variable "snet_mask" {
+  type        = number
+  description = "Subnet Mask"
+  default     = 24
+}
+
+variable "snet_mask_offset" {
+  type        = number
+  description = "Subnet Mask Offset"
+  default     = 8
+}
+
+variable "snet_instance_count" {
+  type        = number
+  description = "Number of subnets to create"
+  default     = 1
+}
+
+### Azure Regions ###
+variable "az_regions" {
+  type        = list(string)
+  description = "Azure regions for resources"
+  default     = ["norwayeast", "westeurope"]
 }
