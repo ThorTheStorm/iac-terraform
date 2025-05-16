@@ -29,7 +29,7 @@ resource "azurerm_storage_account_static_website" "static_web" {
 }
 
 resource "azurerm_storage_blob" "index_html" {
-  name                   = var.index_document # local.naming.sb[0]
+  name                   = azurerm_storage_account_static_website.static_web.index_document # local.naming.sb[0]
   storage_account_name   = azurerm_storage_account.sa_website.name
   storage_container_name = "$web"
   type                   = "Block"
