@@ -4,7 +4,17 @@ name: Deploy infrastructure
 
 # Controls when the workflow will run
 on:
+  # This workflow is triggered on push or pull request events but only for the main branch
   workflow_dispatch:
+    inputs:
+      action_type:
+        description: 'Choose the action type'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+          - apply
+          - destroy
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches:
@@ -42,6 +52,14 @@ jobs:
       
       # Apply Terraform changes
       - name: Terraform apply
+        if: github.event.inputs.action_type == 'apply'
         id: apply
         run: terraform apply -auto-approve
+        working-directory: ${{ env.WORKING_DIR }}
+      
+      # Destroy Terraform changes
+      - name: Terraform destroy
+        if: github.event.inputs.action_type == 'destroy'
+        id: destroy
+        run: terraform destroy -auto-approve
         working-directory: ${{ env.WORKING_DIR }}
