@@ -5,6 +5,15 @@ on:
     paths:
       - 'course_materials/module06/besvarelse/website-deploy/**'
   workflow_dispatch:
+    inputs:
+      action_type:
+        description: 'Choose the action type'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+          - apply
+          - destroy
 
 env:
   ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
