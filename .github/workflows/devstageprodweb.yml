@@ -38,6 +38,7 @@ jobs:
         working-directory: "${{ env.WORKING_DIR }}"
       
       - name: Terraform apply dev
+        if: github.event.inputs.action_type == 'apply'
         run: terraform apply -auto-approve -var-file="terraform.tfvars"
         working-directory: "${{ env.WORKING_DIR }}"
 
@@ -61,6 +62,7 @@ jobs:
         working-directory: "${{ env.WORKING_DIR }}"
       
       - name: Terraform apply stage
+        if: github.event.inputs.action_type == 'apply'
         run: terraform apply -auto-approve -var-file="terraform.tfvars"
         working-directory: "${{ env.WORKING_DIR }}"
 
@@ -87,6 +89,7 @@ jobs:
         working-directory: "${{ env.WORKING_DIR }}"
       
       - name: Terraform apply prod
+        if: github.event.inputs.action_type == 'apply'
         run: terraform apply -auto-approve -var-file="terraform.tfvars"
         working-directory: "${{ env.WORKING_DIR }}"
 
