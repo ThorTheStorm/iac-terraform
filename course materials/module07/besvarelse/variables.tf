@@ -128,7 +128,7 @@ variable "key_vault_secret_permissions" {
     error_message = "All secret permissions must start with an uppercase letter."
   }
   validation {
-    condition     = contains(["Backup", "Delete", "Get", "List", "Purge", "Recover", "Restore", "Set"], var.key_vault_key_permissions)
+    condition     = contains(["Backup", "Delete", "Get", "List", "Purge", "Recover", "Restore", "Set"], var.key_vault_secret_permissions)
     error_message = "Invalid vault secret permissions for the environment."
   }
 }
@@ -145,7 +145,7 @@ variable "key_vault_storage_permissions" {
     error_message = "All storage permissions must start with an uppercase letter."
   }
   validation {
-    condition     = contains(["Backup", "Delete", "DeleteSAS", "Get", "GetSAS", "List", "ListSAS", "Purge", "Recover", "RegenerateKey", "Restore", "Set", "SetSAS", "Update"], var.key_vault_key_permissions)
+    condition     = contains(["Backup", "Delete", "DeleteSAS", "Get", "GetSAS", "List", "ListSAS", "Purge", "Recover", "RegenerateKey", "Restore", "Set", "SetSAS", "Update"], var.key_vault_storage_permissions)
     error_message = "Invalid vault storage permissions for the environment."
   }
 }
