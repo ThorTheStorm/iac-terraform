@@ -17,7 +17,8 @@ crash.*.log
 *.tfvars.json
 
 # Allow only this specific tfvars file
-!course materials/module07/besvarelse/terraform-*.tfvars
+!course_materials/module07/besvarelse/terraform-*.tfvars
+!course_materials/module06/besvarelse/*/terraform.tfvars
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
