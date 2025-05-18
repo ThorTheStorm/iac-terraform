@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v4.1.1
       
       - name: Terraform init
-        run: terraform init
+        run: terraform init -backend-config="web-${terraform.workspace}.tfstate"
         working-directory: "${{ env.WORKING_DIR }}"
         
       - name: Terraform workspace select or create dev
@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v4.1.1
       
       - name: Terraform init
-        run: terraform init
+        run: terraform init -backend-config="web-${terraform.workspace}.tfstate"
         working-directory: "${{ env.WORKING_DIR }}"
         
       - name: Terraform workspace select or create stage
@@ -70,7 +70,7 @@ jobs:
         uses: actions/checkout@v4.1.1
       
       - name: Terraform init
-        run: terraform init
+        run: terraform init -backend-config="web-${terraform.workspace}.tfstate"
         working-directory: "${{ env.WORKING_DIR }}"
         
       - name: Terraform workspace select or create prod
