@@ -81,11 +81,6 @@ variable "storage_blob_instance_count" {
   default     = 1
 }
 
-variable "sub_id" {
-  type        = string
-  description = "Azure Subscription ID"
-}
-
 variable "source_content_title" {
   type        = string
   description = "Title for the web page"
